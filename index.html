@@ -9,7 +9,7 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWix_OtXNPZG2BxOir9VlGq_jEx5C_FwA&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key=[YOUR KEY HERE]&callback=initMap"
         async defer></script>
     <title>Geocode Application</title>
 </head>
@@ -77,7 +77,7 @@
             axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
                 params: {
                     address: location,
-                    key: 'AIzaSyAWix_OtXNPZG2BxOir9VlGq_jEx5C_FwA'
+                    key: '[YOUR KEY HERE]'
                 }
             })
                 .then(function (response) {
