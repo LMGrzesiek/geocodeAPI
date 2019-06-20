@@ -9,7 +9,8 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWix_OtXNPZG2BxOir9VlGq_jEx5C_FwA&callback=initMap"
+        async defer></script>
     <title>Geocode Application</title>
 </head>
 
@@ -32,21 +33,34 @@
 
 
     <script>
-        
-        function initMap() {
-            var options = {
-                zoom: 9,
-                center: { lat: 41.8781, lng: -87.6298 }
-            }
+        const DEFAULT_LAT = 41.8781;
+        const DEFAULT_LNG = -87.6298;
+        const DEFAULT_ZOOM = 9;
 
-            var map = new google.maps.Map(document.getElementById('map'), options);
+        function initMap(lat, long) {
+            var options = {
+                zoom: DEFAULT_ZOOM,
+                center: {
+                    //ternary operator for map creation. If lat and long are null, then we know it is from the onload. 
+                    //Current Coords are for Chicago and default map to show. 
+                    lat: (lat != null) ? lat : DEFAULT_LAT,
+                    lng: (long != null) ? long : DEFAULT_LNG
+                }
+            }
+            //changed this variable to newMap instead of map in order to make line 67 easier to read.
+            var newMap = new google.maps.Map(document.getElementById('map'), options);
             var marker = new google.maps.Marker({
-                position: { lat: 41.8781, lng: -87.6298 },
-                map: map
+                //the Marker class has two attributes in use here. position and map;
+                //this is an object of lat and long coords: this tells where on the given map the marker needs to be placed
+                position: {
+                    lat: (lat != null) ? lat : DEFAULT_LAT,
+                    lng: (long != null) ? long : DEFAULT_LNG
+                },
+                //this is a map object that is initalized to null. 
+                //this map object tells the Marker class what map it is going to use for placing the marker.
+                map: newMap
             });
         }
-       
-
         //Get Location form
         var locationForm = document.getElementById('location-form');
 
@@ -63,7 +77,7 @@
             axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
                 params: {
                     address: location,
-                    key: YOUR_API_KEY
+                    key: 'AIzaSyAWix_OtXNPZG2BxOir9VlGq_jEx5C_FwA'
                 }
             })
                 .then(function (response) {
@@ -100,21 +114,21 @@
                         </ul>
                     `;
 
-
-
-
-
-
+                    initMap(lat, lng);
                     //Output to app
                     document.getElementById('formatted-address').innerHTML = formattedAddressOutput;
                     document.getElementById('address-components').innerHTML = addressComponentsOutput;
                     document.getElementById('geometry').innerHTML = geometryOutput;
 
+
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
+
         }
+
+
     </script>
 </body>
 
